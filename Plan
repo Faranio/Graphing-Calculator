@@ -1,0 +1,9 @@
+GUI:
+- Screen for calculating graphs
+- Input line for functions
+- Option for calculating derivative
+- Check for invalid graphs
++ Can use matplotlib and PyQT
+
+1) Create a simple graph calculator
+2) Wrap it into a GUI
