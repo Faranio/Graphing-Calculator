@@ -7,3 +7,6 @@ GUI:
 
 1) Create a simple graph calculator
 2) Wrap it into a GUI
+
+- Check if the math function is valid
+- Draw the equation

@@ -1,10 +1,9 @@
 def get_input():
-
+	equation = str(input())
 
 
 def main():
-	function = get_input()
-	pass
+	get_input()
 	
 
 if __name__ == "__main__":
