@@ -1,9 +1,22 @@
-import tkinter
+from tkinter import *
 
 from graph import *
 
-window = tkinter.Tk()
+
+def graph():
+	equation = entry.get()
+	draw_function(equation)
+
+
+window = Tk()
 window.title('Graphing Calculator')
-calc_button = tkinter.Button(window, text='Calculate', width=25, command=draw_function)
-calc_button.pack()
+
+Label(window, text='Type equation here:').pack()
+
+entry = Entry(window)
+entry.pack()
+
+graph_button = Button(window, text='Graph', width=25, command=graph)
+graph_button.pack()
+
 window.mainloop()
