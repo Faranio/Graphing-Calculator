@@ -17,3 +17,5 @@ GUI:
 - Add DERIVATIVE button to the graph
 - Add QUIT button
 - Customize graph window
+- Make axes bold
+- Make x and y ranges customizable
