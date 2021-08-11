@@ -9,13 +9,12 @@ GUI:
 2) Wrap it into a GUI
 
 - Check if the math function is valid
-- Draw the equation
++ Draw the equation
 - Check different equations
-- Finish GUI
-- Merge GUI with resultant graphs
++ Merge GUI with resultant graphs
 - Add CLEAR button and fix domains
 - Add DERIVATIVE button to the graph
 - Add QUIT button
 - Customize graph window
-- Make axes bold
-- Make x and y ranges customizable
++ Make axes bold
++ Make x and y ranges customizable
