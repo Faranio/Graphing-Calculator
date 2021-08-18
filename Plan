@@ -18,3 +18,5 @@ GUI:
 - Customize graph window
 + Make axes bold
 + Make x and y ranges customizable
+- Add differential equations
+- Replot all equations when ranges are changed

@@ -7,6 +7,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import *
 
 
+EQUATIONS = {}
+
+
 def get_ranges():
 	x_start, x_end = x_range_entry_start.get(), x_range_entry_end.get()
 	y_start, y_end = y_range_entry_start.get(), y_range_entry_end.get()
@@ -35,25 +38,35 @@ def get_ranges():
 	
 
 def draw_function(function):
-	X_RANGE, Y_RANGE = get_ranges()
+	global EQUATIONS
 	
+	X_RANGE, Y_RANGE = get_ranges()
 	x_values = np.linspace(*X_RANGE, 1000)
 	y_values = []
+	
+	plt.xlim(*X_RANGE)
+	plt.ylim(*Y_RANGE)
+	plt.grid(True)
+	
+	if function in EQUATIONS:
+		line = EQUATIONS[function].pop(0)
+		line.remove()
+		del line
 	
 	for x in x_values:
 		y = eval(function)
 		y_values.append(y)
 	
-	plt.xlim(*X_RANGE)
-	plt.ylim(*Y_RANGE)
-	plt.grid(True)
-	plt.plot(x_values, y_values)
+	EQUATIONS[function] = plt.plot(x_values, y_values, label=function)
+	plt.legend()
 	plt.axhline(0, color='black')
 	plt.axvline(0, color='black')
 	fig.canvas.draw()
 	
 	
 def clear():
+	global EQUATIONS
+	EQUATIONS = set()
 	equation_entry.delete(0, 'end')
 	x_range_entry_start.delete(0, 'end')
 	x_range_entry_end.delete(0, 'end')
