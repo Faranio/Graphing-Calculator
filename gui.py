@@ -1,13 +1,14 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
 from math import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import *
 
 
-EQUATIONS = {}
+EQUATIONS = set()
 
 
 def get_ranges():
@@ -35,29 +36,33 @@ def get_ranges():
 		y_end = float(y_end)
 		
 	return [x_start, x_end], [y_start, y_end]
-	
 
-def draw_function(function):
-	global EQUATIONS
-	
-	X_RANGE, Y_RANGE = get_ranges()
-	x_values = np.linspace(*X_RANGE, 1000)
+
+def plot_in_interval(function, x_values):
 	y_values = []
-	
-	plt.xlim(*X_RANGE)
-	plt.ylim(*Y_RANGE)
-	plt.grid(True)
-	
-	if function in EQUATIONS:
-		line = EQUATIONS[function].pop(0)
-		line.remove()
-		del line
 	
 	for x in x_values:
 		y = eval(function)
 		y_values.append(y)
 	
-	EQUATIONS[function] = plt.plot(x_values, y_values, label=function)
+	plt.plot(x_values, y_values, label=function)
+	
+
+def graph_function(function):
+	global EQUATIONS
+	EQUATIONS.add(function)
+	plt.clf()
+	
+	X_RANGE, Y_RANGE = get_ranges()
+	x_values = np.linspace(*X_RANGE, 1000)
+	
+	plt.xlim(*X_RANGE)
+	plt.ylim(*Y_RANGE)
+	plt.grid(True)
+		
+	for function in EQUATIONS:
+		plot_in_interval(function, x_values)
+	
 	plt.legend()
 	plt.axhline(0, color='black')
 	plt.axvline(0, color='black')
@@ -74,11 +79,15 @@ def clear():
 	y_range_entry_end.delete(0, 'end')
 	plt.clf()
 	fig.canvas.draw()
+	
+	
+def close():
+	sys.exit(0)
 
 
 def graph():
 	equation = equation_entry.get()
-	draw_function(equation)
+	graph_function(equation)
 
 
 matplotlib.use('TkAgg')
@@ -111,10 +120,13 @@ Label(window, text='Y range end:').pack()
 y_range_entry_end = Entry(window)
 y_range_entry_end.pack()
 
+graph_button = Button(window, text='Graph', width=25, command=graph)
+graph_button.pack()
+
 clear_button = Button(window, text='Clear', width=25, command=clear)
 clear_button.pack()
 
-graph_button = Button(window, text='Graph', width=25, command=graph)
-graph_button.pack()
+exit_button = Button(window, text='Exit', width=25, command=close)
+exit_button.pack()
 
 window.mainloop()

@@ -14,9 +14,10 @@ GUI:
 + Merge GUI with resultant graphs
 - Add CLEAR button and fix domains
 - Add DERIVATIVE button to the graph
-- Add QUIT button
 - Customize graph window
 + Make axes bold
 + Make x and y ranges customizable
 - Add differential equations
-- Replot all equations when ranges are changed
++ Replot all equations when ranges are changed
++ Close button
+- Place buttons properly
