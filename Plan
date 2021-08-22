@@ -8,16 +8,16 @@ GUI:
 1) Create a simple graph calculator
 2) Wrap it into a GUI
 
-- Check if the math function is valid
++ Check if the math function is valid
 + Draw the equation
-- Check different equations
++ Check different equations
 + Merge GUI with resultant graphs
-- Add CLEAR button and fix domains
-- Add DERIVATIVE button to the graph
++ Add CLEAR button and fix domains
 + Make axes bold
 + Make x and y ranges customizable
 + Replot all equations when ranges are changed
 + Close button
 + Place buttons properly
++ Handle listbox of equations (to remove)
+- Add DERIVATIVE button to the graph
 - Refactor the code
-- Handle listbox of equations (to remove)
