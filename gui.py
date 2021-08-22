@@ -39,13 +39,19 @@ def get_ranges():
 
 
 def plot_in_interval(function, x_values):
+	new_x_values = []
 	y_values = []
 	
 	for x in x_values:
-		y = eval(function)
+		try:
+			y = eval(function)
+		except ValueError:
+			continue
+			
+		new_x_values.append(x)
 		y_values.append(y)
 	
-	plt.plot(x_values, y_values, label=function)
+	plt.plot(new_x_values, y_values, label=function)
 	
 
 def graph_function(function):
@@ -94,54 +100,61 @@ matplotlib.use('TkAgg')
 fig = plt.figure(1)
 
 window = Tk()
-window.geometry('700x720')
+window.geometry('640x720')
 window.title('Graphing Calculator')
 
 canvas = FigureCanvasTkAgg(fig, master=window)
 plot_widget = canvas.get_tk_widget()
 plot_widget.pack()
 
-Label(window, text='Type equation here:').pack()
+equation_label = Label(window, text='Type equation here:')
+equation_label.pack()
+equation_label.place(border=OUTSIDE, y=480)
 equation_entry = Entry(window)
 equation_entry.pack()
+equation_entry.place(border=OUTSIDE, y=501)
+
+listbox = Listbox(window)
+listbox.pack()
+listbox.place(border=OUTSIDE, x=400, y=501)
 
 x_range_label_start = Label(window, text='X range start:')
 x_range_label_start.pack()
-x_range_label_start.place(border=OUTSIDE, x=215, y=530)
+x_range_label_start.place(border=OUTSIDE, x=40, y=530)
 x_range_entry_start = Entry(window)
 x_range_entry_start.pack()
-x_range_entry_start.place(border=OUTSIDE, x=175, y=550)
+x_range_entry_start.place(border=OUTSIDE, y=550)
 
 x_range_label_end = Label(window, text='X range end:')
 x_range_label_end.pack()
-x_range_label_end.place(border=OUTSIDE, x=400, y=530)
+x_range_label_end.place(border=OUTSIDE, x=225, y=530)
 x_range_entry_end = Entry(window)
 x_range_entry_end.pack()
-x_range_entry_end.place(border=OUTSIDE, x=360, y=550)
+x_range_entry_end.place(border=OUTSIDE, x=185, y=550)
 
 y_range_label_start = Label(window, text='Y range start:')
 y_range_label_start.pack()
-y_range_label_start.place(border=OUTSIDE, x=215, y=575)
+y_range_label_start.place(border=OUTSIDE, x=40, y=575)
 y_range_entry_start = Entry(window)
 y_range_entry_start.pack()
-y_range_entry_start.place(border=OUTSIDE, x=175, y=595)
+y_range_entry_start.place(border=OUTSIDE, y=595)
 
 y_range_label_end = Label(window, text='Y range end:')
 y_range_label_end.pack()
-y_range_label_end.place(border=OUTSIDE, x=400, y=575)
+y_range_label_end.place(border=OUTSIDE, x=225, y=575)
 y_range_entry_end = Entry(window)
 y_range_entry_end.pack()
-y_range_entry_end.place(border=OUTSIDE, x=360, y=595)
+y_range_entry_end.place(border=OUTSIDE, x=185, y=595)
 
-graph_button = Button(window, text='Graph', width=84, command=graph)
+graph_button = Button(window, text='Graph', width=77, command=graph)
 graph_button.pack()
 graph_button.place(border=OUTSIDE, x=0, y=630)
 
-clear_button = Button(window, text='Clear', width=84, command=clear)
+clear_button = Button(window, text='Clear', width=77, command=clear)
 clear_button.pack()
 clear_button.place(border=OUTSIDE, x=0, y=660)
 
-exit_button = Button(window, text='Exit', width=84, command=close)
+exit_button = Button(window, text='Exit', width=77, command=close)
 exit_button.pack()
 exit_button.place(border=OUTSIDE, x=0, y=690)
 
