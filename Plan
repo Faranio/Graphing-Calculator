@@ -19,5 +19,4 @@ GUI:
 + Close button
 + Place buttons properly
 + Handle listbox of equations (to remove)
-- Add DERIVATIVE button to the graph
 - Refactor the code
