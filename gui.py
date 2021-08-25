@@ -7,58 +7,12 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import *
 
 import utils
-
-
-def plot_in_interval(function, x_values):
-	new_x_values = []
-	y_values = []
-	
-	for x in x_values:
-		try:
-			y = eval(function)
-		except (NameError, SyntaxError):
-			listbox_error.place_forget()
-			equation_entry_error.place(border=OUTSIDE, x=185, y=490)
-			return -1
-		except ValueError:
-			continue
-			
-		new_x_values.append(x)
-		y_values.append(y)
-	
-	try:
-		plt.plot(new_x_values, y_values, label=function)
-	except TypeError:
-		listbox_error.place_forget()
-		equation_entry_error.place(border=OUTSIDE, x=185, y=490)
-		return -1
-	
-	equation_entry_error.place_forget()
-	return 1
-
-
-def clear():
-	global EQUATIONS, INDEX
-	
-	listbox_error.place_forget()
-	equation_entry_error.place_forget()
-	EQUATIONS = {}
-	listbox.delete(0, INDEX)
-	INDEX = 1
-	equation_entry.delete(0, 'end')
-	x_range_entry_start.delete(0, 'end')
-	x_range_entry_end.delete(0, 'end')
-	y_range_entry_start.delete(0, 'end')
-	y_range_entry_end.delete(0, 'end')
-	plt.clf()
-	fig.canvas.draw()
-	
-	
-def close():
-	sys.exit(0)
 	
 	
 class GraphingCalculator:
+	"""
+	Main class of the graphing calculator application.
+	"""
 	def __init__(self, width=640, height=760, title='Graphing Calculator'):
 		matplotlib.use('TkAgg')
 		self.equations = {}
@@ -86,6 +40,9 @@ class GraphingCalculator:
 		self.window.mainloop()
 		
 	def create_layout(self):
+		"""
+		Builds a GUI for the graphing calculator.
+		"""
 		canvas = FigureCanvasTkAgg(self.fig, master=self.window)
 		plot_widget = canvas.get_tk_widget()
 		plot_widget.pack()
@@ -97,6 +54,9 @@ class GraphingCalculator:
 		self.define_errors()
 		
 	def create_labels(self):
+		"""
+		Creates all of the necessary labels on the GUI.
+		"""
 		equation_label = Label(self.window, text='Type equation here:')
 		equation_label.pack()
 		equation_label.place(border=OUTSIDE, y=480)
@@ -122,6 +82,9 @@ class GraphingCalculator:
 		y_range_label_end.place(border=OUTSIDE, x=185, y=589)
 		
 	def create_entries(self):
+		"""
+		Creates all of the necessary entries for the GUI.
+		"""
 		self.equation_entry = Entry(self.window)
 		self.equation_entry.pack()
 		self.equation_entry.place(border=OUTSIDE, y=501)
@@ -143,6 +106,9 @@ class GraphingCalculator:
 		self.y_range_entry_end.place(border=OUTSIDE, x=185, y=609)
 		
 	def create_buttons(self):
+		"""
+		Creates all of the necessary buttons for the GUI.
+		"""
 		graph_button = Button(self.window, text='Graph', width=77, command=self.graph)
 		graph_button.pack()
 		graph_button.place(border=OUTSIDE, y=640)
@@ -151,27 +117,70 @@ class GraphingCalculator:
 		remove_button.pack()
 		remove_button.place(border=OUTSIDE, y=670)
 		
-		clear_button = Button(self.window, text='Clear', width=77, command=clear)
+		clear_button = Button(self.window, text='Clear', width=77, command=self.clear)
 		clear_button.pack()
 		clear_button.place(border=OUTSIDE, y=700)
 		
-		exit_button = Button(self.window, text='Exit', width=77, command=close)
+		exit_button = Button(self.window, text='Exit', width=77, command=self.close)
 		exit_button.pack()
 		exit_button.place(border=OUTSIDE, y=730)
 		
 	def create_listbox(self):
+		"""
+		Creates a listbox of equations for the GUI.
+		"""
 		self.listbox = Listbox(self.window, height=7)
 		self.listbox.pack()
 		self.listbox.place(border=OUTSIDE, x=400, y=501)
 		
 	def define_errors(self):
+		"""
+		Creates all of the necessary warnings for the GUI.
+		"""
 		self.equation_entry_error = Label(self.window, text='ERROR! Incorrect equation!\nUse only x variable.', fg='red')
 		self.equation_entry_error.pack_forget()
 		
 		self.listbox_error = Label(self.window, text='ERROR! Please choose an\nequation to remove.', fg='red')
 		self.listbox_error.pack_forget()
 	
+	def plot_in_interval(self, function, x_values):
+		"""
+		Plots a function at a given range of x values.
+		
+		:param function: Function for a plot.
+		:param x_values: Range of x values for plotting.
+		:return: Flag indicating the success of execution.
+		"""
+		new_x_values = []
+		y_values = []
+		
+		for x in x_values:
+			try:
+				y = eval(function)
+			except (NameError, SyntaxError):
+				self.listbox_error.place_forget()
+				self.equation_entry_error.place(border=OUTSIDE, x=185, y=490)
+				return -1
+			except ValueError:
+				continue
+			
+			new_x_values.append(x)
+			y_values.append(y)
+		
+		try:
+			plt.plot(new_x_values, y_values, label=function)
+		except TypeError:
+			self.listbox_error.place_forget()
+			self.equation_entry_error.place(border=OUTSIDE, x=185, y=490)
+			return -1
+		
+		self.equation_entry_error.place_forget()
+		return 1
+	
 	def graph(self):
+		"""
+		Graphs the function after pressing the "Graph" button.
+		"""
 		function = self.equation_entry.get()
 		
 		add = False
@@ -193,7 +202,7 @@ class GraphingCalculator:
 		plt.grid(True)
 		
 		for function in self.equations.values():
-			result = plot_in_interval(function, x_values)
+			result = self.plot_in_interval(function, x_values)
 			
 			if result == -1:
 				for k, v in self.equations.items():
@@ -212,6 +221,9 @@ class GraphingCalculator:
 		self.fig.canvas.draw()
 	
 	def remove(self):
+		"""
+		Removes the function from a listbox and from a plot after pressing the "Remove" button.
+		"""
 		self.listbox_error.place_forget()
 		self.equation_entry_error.place_forget()
 		
@@ -229,7 +241,7 @@ class GraphingCalculator:
 		self.listbox.delete(ANCHOR)
 		plt.clf()
 		
-		if len(EQUATIONS) == 0:
+		if len(self.equations) == 0:
 			self.fig.canvas.draw()
 			return
 		
@@ -242,9 +254,36 @@ class GraphingCalculator:
 		plt.grid(True)
 		
 		for function in self.equations.values():
-			plot_in_interval(function, x_values)
+			self.plot_in_interval(function, x_values)
 		
 		plt.legend()
 		plt.axhline(0, color='black')
 		plt.axvline(0, color='black')
 		self.fig.canvas.draw()
+	
+	def clear(self):
+		"""
+		Clears the plot and the listbox after pressing the "Clear" button.
+		"""
+		self.listbox_error.place_forget()
+		self.equation_entry_error.place_forget()
+		self.equations = {}
+		self.listbox.delete(0, self.index)
+		self.index = 1
+		self.equation_entry.delete(0, 'end')
+		self.x_range_entry_start.delete(0, 'end')
+		self.x_range_entry_end.delete(0, 'end')
+		self.y_range_entry_start.delete(0, 'end')
+		self.y_range_entry_end.delete(0, 'end')
+		plt.clf()
+		self.fig.canvas.draw()
+	
+	def close(self):
+		"""
+		Exits the application after pressing the "Exit" button.
+		"""
+		sys.exit(0)
+
+
+if __name__ == "__main__":
+	GraphingCalculator()
